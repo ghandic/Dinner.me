@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dinner.me Menu</title>
+
+        <link rel="stylesheet" href="/assets/css/base.css" />
+        <link rel="stylesheet" href="/assets/css/menu.css" />
+    </head>
+    <body>
+        <button class="checkout-button" onclick="checkout()">Checkout</button>
+        <input type="text" id="filter" onkeyup="filter()" placeholder="Search for names.." />
+        <div class="menu">
+            {% for option in menu %}
+            <div class="menu-option">
+                <a>
+                    <img src="{{option.image}}" />
+                </a>
+
+                <div class="menu-option-details">
+                    <div class="menu-option-meal-type">{{option.meal_type}}</div>
+                    <h2 class="menu-option-title">
+                        <a href="{{option.link}}" target="_blank">{{option.name}}</a>
+                    </h2>
+                    <h3 class="menu-option-subtitle">
+                        <a href="{{option.link}}" target="_blank">{{option.subtitle}}</a>
+                    </h3>
+                    <ul class="menu-option-labels">
+                        {% for label in option.labels %}
+                        <li class="menu-option-label">
+                            <a href="{{label.link}}" target="_blank"> {{label.name}} </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <button onclick="addToCart({{option['id']}})">Add</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+    <script>
+        cart = [];
+        function addToCart(id) {
+            cart.push(id);
+            console.log(cart);
+        }
+
+        function checkout() {
+            if (cart.length == 0) {
+                return;
+            }
+            const uri = "http://0.0.0.0:5555/report?";
+            window.location = uri + cart.map((item) => `ids=${item}`).join("&");
+        }
+
+        function filter() {
+            input = document.getElementById("filter");
+            query = input.value.toUpperCase();
+
+            options = document.getElementsByClassName("menu-option");
+            Array.from(options).forEach(function (el) {
+                labels = el.getElementsByClassName("menu-option-label");
+                labels = Array.from(labels)
+                    .map((el) => el.innerText.toUpperCase())
+                    .join(" ");
+                if (labels.toUpperCase().indexOf(query) > -1) {
+                    el.style.display = "";
+                } else {
+                    el.style.display = "none";
+                }
+            });
+        }
+    </script>
+</html>

@@ -3,14 +3,12 @@ from pathlib import Path
 
 from tabulate import tabulate
 
-from .conversion import Ingredient
+from conversion import Ingredient
 
 
 class ShoppingList:
-    def __init__(self) -> None:
-        self.store = Path("data") / "dinnerly.json"
-        with open(self.store, "r") as f:
-            self.data = json.load(f)
+    def __init__(self, store) -> None:
+        self.data = store
 
     def create_list(self, ids):
         shopping_list = []
@@ -27,10 +25,14 @@ class ShoppingList:
             condensed_shopping_list.append(sum(list(filter(lambda item: item.name == sln, shopping_list))))
 
         condensed_shopping_list.sort(key=lambda item: item.name)
+        return {"meals": meals, "shopping_list": condensed_shopping_list}
+
+    @staticmethod
+    def print_list(_list):
         print("=" * 13)
         print("Meals")
         print("=" * 13)
-        for meal in meals:
+        for meal in _list["meals"]:
             print("-", meal["name"], meal["link"])
 
         print()
@@ -42,7 +44,7 @@ class ShoppingList:
 
         print(
             tabulate(
-                [item.to_dict() for item in condensed_shopping_list],
+                [item.to_dict() for item in _list["shopping_list"]],
                 headers={"name": "Name", "Amount": "amount", "Unit": "unit"},
             )
         )

@@ -8,8 +8,11 @@ verify_ssl = true
 [packages]
 typer = "*"
 requests = "*"
-spacy = "*"
 tabulate = "*"
+jinja2 = "*"
+fastapi = "*"
+aiofiles = "*"
+uvicorn = "*"
 
 [requires]
 python_version = "3.8"
