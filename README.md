@@ -14,4 +14,4 @@ Click **Add** on any recipes you want, then click **checkout** (note currently n
 
 ![](assets/menu.png)
 
-![](assets/menu.png)
+![](assets/list.png)
