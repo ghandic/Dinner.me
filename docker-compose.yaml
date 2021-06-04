@@ -1,0 +1,11 @@
+version: "2"
+services:
+    dinner.me:
+        build: .
+        image: challisa/dinner.me
+        container_name: dinner.me
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/opt/working
+        entrypoint: uvicorn app:app --reload --host 0.0.0.0 --port 8000

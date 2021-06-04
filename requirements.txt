@@ -1,0 +1,9 @@
+typer
+requests
+tabulate
+jinja2
+fastapi
+aiofiles
+uvicorn
+aiohttp
+nest_asyncio

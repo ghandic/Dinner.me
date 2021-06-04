@@ -7,8 +7,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
-from dinnerly import Dinnerly
-from shopping_list import ShoppingList
+from .dinnerly import Dinnerly
+from .shopping_list import ShoppingList
 
 app = FastAPI()
 app.add_middleware(
@@ -31,7 +31,8 @@ def menu(request: Request):
 @app.get("/report", response_class=HTMLResponse)
 def shop(request: Request, ids: List[int] = Query(None, description="List of names to greet")):
     shop = dinner.shop(ids)
-    ShoppingList.print_list(shop)
+    resp = ShoppingList.print_list(shop)
+    return "<pre>" + resp + "</pre>"
     return templates.TemplateResponse("shopping.html", {"request": request, "shop": shop})
 
 

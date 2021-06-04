@@ -3,7 +3,7 @@ from pathlib import Path
 
 from tabulate import tabulate
 
-from conversion import Ingredient
+from .conversion import Ingredient
 
 
 class ShoppingList:
@@ -29,25 +29,24 @@ class ShoppingList:
 
     @staticmethod
     def print_list(_list):
-        print("=" * 13)
-        print("Meals")
-        print("=" * 13)
+        underline = "=" * 13
+        resp = [underline, "Meals", underline]
         for meal in _list["meals"]:
-            print("-", meal["name"], meal["link"])
+            resp.append(f"- {meal['name']} {meal['link']}")
 
-        print()
-
-        print("=" * 13)
-        print("Shopping List")
-        print("=" * 13)
-        print()
-
-        print(
+        resp += [
+            "",
+            underline,
+            "Shopping List",
+            underline,
+            "",
             tabulate(
                 [item.to_dict() for item in _list["shopping_list"]],
                 headers={"name": "Name", "Amount": "amount", "Unit": "unit"},
-            )
-        )
+            ),
+        ]
+
+        return "\n".join(resp)
 
 
 if __name__ == "__main__":

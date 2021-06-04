@@ -51,7 +51,7 @@
             if (cart.length == 0) {
                 return;
             }
-            const uri = "http://0.0.0.0:5555/report?";
+            const uri = "http://0.0.0.0:8000/report?";
             window.location = uri + cart.map((item) => `ids=${item}`).join("&");
         }
 

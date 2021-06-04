@@ -97,7 +97,7 @@ def structure_ingredient(ing_string):
 
 class IngredientConverter:
     def __init__(self) -> None:
-        self.store = Path("data") / "dinnerly.json"
+        self.store = Path("src/data") / "dinnerly.json"
         with open(self.store, "r") as f:
             self.data = json.load(f)
 

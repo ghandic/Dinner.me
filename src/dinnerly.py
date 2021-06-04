@@ -1,14 +1,14 @@
 import json
 from pathlib import Path
 
-from download import DinnerlyDownloader
-from conversion import IngredientConverter
-from shopping_list import ShoppingList
+from .download import DinnerlyDownloader
+from .conversion import IngredientConverter
+from .shopping_list import ShoppingList
 
 
 class Dinnerly:
     def __init__(self) -> None:
-        self.data_store = Path("data")
+        self.data_store = Path("src/data")
         self.dinnerly_cache = self.data_store / "dinnerly.json"
         self.sync()
 
@@ -25,19 +25,24 @@ class Dinnerly:
 
     @property
     def menu(self):
-        return [
-            {
-                "id": recipe["id"],
-                "name": recipe["name"],
-                "subtitle": recipe["subtitle"],
-                "meal_type": recipe["meal_type"],
-                "title": recipe["name"],
-                "labels": [{"name": l, "link": l} for l in recipe["meal_attributes"]],
-                "image": recipe["Dinner.me.image"],
-                "link": recipe["Dinner.me.instructions"],
-            }
-            for recipe in self.recipes
-        ]
+        unique_recipe_names = []
+        ideas = []
+        for recipe in self.recipes:
+            if recipe["name_with_subtitle"] not in unique_recipe_names:
+                ideas.append(
+                    {
+                        "id": recipe["id"],
+                        "name": recipe["name"],
+                        "subtitle": recipe["subtitle"],
+                        "meal_type": recipe["meal_type"],
+                        "title": recipe["name"],
+                        "labels": [{"name": l, "link": l} for l in recipe["meal_attributes"]],
+                        "image": recipe["Dinner.me.image"],
+                        "link": recipe["Dinner.me.instructions"],
+                    }
+                )
+                unique_recipe_names.append(recipe["name_with_subtitle"])
+        return ideas
 
     def shop(self, ids):
         return ShoppingList(self.recipes).create_list(ids)
