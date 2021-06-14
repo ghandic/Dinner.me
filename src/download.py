@@ -62,7 +62,7 @@ class DinnerlyDownloader:
                 img_path = self.data_store / "images" / f'{recipe["id"]}.jpg'
                 with open(img_path, "wb") as f:
                     shutil.copyfileobj(response.raw, f)
-                recipe["Dinner.me.image"] = str(img_path)
+                recipe["Dinner.me.image"] = str(img_path).strip("/src")
             else:
                 logger.info(f"Using cached image for recipe id: {recipe['id']}")
 
@@ -73,7 +73,7 @@ class DinnerlyDownloader:
                 pdf_path = self.data_store / "instructions" / f'{recipe["id"]}.pdf'
                 with open(pdf_path, "wb") as f:
                     shutil.copyfileobj(response.raw, f)
-                recipe["Dinner.me.instructions"] = str(pdf_path)
+                recipe["Dinner.me.instructions"] = str(pdf_path).strip("/src")
             else:
                 logger.info(f"Using cached instructions for recipe id: {recipe['id']}")
 
