@@ -9,3 +9,15 @@ services:
         volumes:
             - .:/opt/working
         entrypoint: uvicorn app:app --reload --host 0.0.0.0 --port 8000
+
+    demo:
+        image: challisa/dinner.me.demo
+        container_name: dinner.me.demo
+        build:
+            context: ./frontend
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+            - /app/.next
+        ports:
+            - 3000:3000

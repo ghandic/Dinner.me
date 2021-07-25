@@ -31,9 +31,11 @@ class ShoppingList:
     def print_list(_list):
         underline = "=" * 13
         resp = [underline, "Meals", underline]
+        unique_names = set()
         for meal in _list["meals"]:
-            resp.append(f"- {meal['name']} {meal['link']}")
-
+            unique_names.add(f"- {meal['name']} {meal['link']}")
+        resp = resp + list(unique_names)
+        
         resp += [
             "",
             underline,
