@@ -1,6 +1,5 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { useGlobalState } from "../hooks/useGlobalStore";
+import { useGlobalState, useGlobalDispatch } from "../hooks/useGlobalStore";
 import Cart from "./Cart";
 
 const Counter = styled.div`
@@ -27,7 +26,8 @@ const CounterValue = styled.div`
 
 const Button = styled.div`
     border: 2px solid ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${(props) => (props.active ? "#fff" : props.theme.colors.primary)};
+    background: ${(props) => (props.active ? props.theme.colors.primary : "none")};
 
     width: 40px;
     height: 40px;
@@ -42,7 +42,9 @@ const Button = styled.div`
     z-index: 3;
 
     & svg {
-        fill: ${({ theme }) => theme.colors.primary};
+        & path {
+            fill: ${(props) => (props.active ? "#fff" : props.theme.colors.primary)};
+        }
     }
 
     &:hover,
@@ -71,16 +73,17 @@ const Overlay = styled.div`
 `;
 
 export default function CartButton({}) {
-    const { itemCount } = useGlobalState();
-    const [cartVisible, setCartVisible] = useState(false);
+    const { itemCount, cartVisible } = useGlobalState();
+    const dispatch = useGlobalDispatch();
     return (
         <>
             {cartVisible && <Overlay></Overlay>}
             <Button
                 onClick={() => {
-                    (itemCount > 0 || cartVisible) && setCartVisible(!cartVisible);
+                    (itemCount > 0 || cartVisible) && dispatch({ type: "cart_toggle" });
                 }}
-                className={cartVisible ? "active" : ""}
+                className="ignore-react-onclickoutside"
+                active={cartVisible}
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useGlobalDispatch, useGlobalState } from "../hooks/useGlobalStore";
+import onClickOutside from "react-onclickoutside";
 
 const CartContainer = styled.div`
     color: ${({ theme }) => theme.colors.primary};
@@ -53,9 +54,10 @@ const ItemTrashIcon = styled.div`
     }
 `;
 
-export default function Cart() {
+function Cart() {
     const { items } = useGlobalState();
     const dispatch = useGlobalDispatch();
+    Cart.handleClickOutside = () => dispatch({ type: "cart_toggle" });
     return (
         <CartContainer>
             <CartTitle>Meal Plan</CartTitle>
@@ -109,3 +111,9 @@ export default function Cart() {
         </CartContainer>
     );
 }
+
+const clickOutsideConfig = {
+    handleClickOutside: () => Cart.handleClickOutside,
+};
+
+export default onClickOutside(Cart, clickOutsideConfig);

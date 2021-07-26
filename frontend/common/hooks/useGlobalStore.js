@@ -4,12 +4,18 @@ const initialState = {
     items: [],
     itemCount: 0,
     query: "",
+    cartVisible: false,
 };
 
 const globalReducer = (state, action) => {
     switch (action.type) {
         case "reset":
             return initialState;
+        case "cart_toggle":
+            return {
+                ...state,
+                cartVisible: !state.cartVisible,
+            };
 
         case "setQuery":
             return {
