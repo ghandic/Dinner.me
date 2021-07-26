@@ -10,7 +10,7 @@ Note: Takes a while on start up to download latest recipes, cards and images
 docker-compose up
 ```
 
-Click **Add** on any recipes you want, then click **checkout** (note currently no UX for knowing what is in your "basket")
+Add any recipes you want to your cart, use the buttons on the top right to view what is in your cart, remove all, or view your shopping list. You can also click on the titles of the recipes for the recipe card in a new tab.
 
 ![](assets/menu.png)
 
