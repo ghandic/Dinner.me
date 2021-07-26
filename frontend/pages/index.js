@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import useSWR from "swr";
 
 import Card from "../common/components/Card";
 import Gallery from "../common/components/Gallery";
-import Meals from "../common/data/Meals";
 import NavBar from "../common/components/NavBar";
 import { useGlobalState } from "../common/hooks/useGlobalStore";
 
@@ -11,14 +11,18 @@ const PageContent = styled.div`
     margin-top: 80px;
 `;
 
+const fetcher = (url) => fetch(url).then((r) => r.json());
+
 export default function Home() {
-    // TODO: Shopping List page
     // TODO: Fix ingredients
-    // TODO: Backend API
-    // TODO: Infinite Scroll - https://ellismin.com/2020/05/next-infinite-scroll/
     // TODO: Backend - Approx costings
     // TODO: Low priority - Fix searchbar for mobile
     const { query } = useGlobalState();
+
+    const { data: meals, error } = useSWR("http://0.0.0.0:8000/recipes", fetcher);
+
+    if (error) return <div>failed to load</div>;
+    if (!meals) return <div>loading...</div>;
 
     const does_match = (meal) => {
         return (
@@ -38,7 +42,7 @@ export default function Home() {
             <NavBar></NavBar>
             <PageContent>
                 <Gallery>
-                    {Meals.map((meal) => {
+                    {meals.map((meal) => {
                         if (does_match(meal)) {
                             return <Card {...meal}></Card>;
                         }

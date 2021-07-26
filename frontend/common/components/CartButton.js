@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useGlobalState, useGlobalDispatch } from "../hooks/useGlobalStore";
 import Cart from "./Cart";
+import Overlay from "./Overlay";
 
 const Counter = styled.div`
     position: relative;
@@ -39,7 +40,7 @@ const Button = styled.div`
     top: 25px;
     transition: 0.3s;
     font-size: 22px;
-    z-index: 3;
+    z-index: ${(props) => (props.active ? 3 : 1)};
 
     & svg {
         & path {
@@ -59,17 +60,6 @@ const Button = styled.div`
             }
         }
     }
-`;
-
-const Overlay = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    background: #000;
-    opacity: 0.5;
 `;
 
 export default function CartButton({}) {

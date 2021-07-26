@@ -5,6 +5,7 @@ const initialState = {
     itemCount: 0,
     query: "",
     cartVisible: false,
+    shoppingListVisible: false,
 };
 
 const globalReducer = (state, action) => {
@@ -15,6 +16,11 @@ const globalReducer = (state, action) => {
             return {
                 ...state,
                 cartVisible: !state.cartVisible,
+            };
+        case "shopping_list_toggle":
+            return {
+                ...state,
+                shoppingListVisible: !state.shoppingListVisible,
             };
 
         case "setQuery":

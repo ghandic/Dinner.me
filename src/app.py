@@ -28,11 +28,16 @@ def menu(request: Request):
     return templates.TemplateResponse("menu.html", {"request": request, "menu": dinner.menu})
 
 
+@app.get("/recipes")
+def menu():
+    return dinner.recipes
+
+
 @app.get("/report", response_class=HTMLResponse)
 def shop(request: Request, ids: List[int] = Query(None, description="List of names to greet")):
     shop = dinner.shop(ids)
     resp = ShoppingList.print_list(shop)
-    return "<pre>" + resp + "</pre>"
+    return resp
     return templates.TemplateResponse("shopping.html", {"request": request, "shop": shop})
 
 
