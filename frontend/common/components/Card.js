@@ -170,8 +170,8 @@ export default function Card({
                     </CardLink>
                 </CardSubtitle>
                 <CardLabels>
-                    {meal_attributes.map((label) => (
-                        <CardLabel>{label.replace("_", " ").toUpperCase()}</CardLabel>
+                    {meal_attributes.map((label, index) => (
+                        <CardLabel key={index}>{label.replace("_", " ").toUpperCase()}</CardLabel>
                     ))}
                 </CardLabels>
             </CardDetails>

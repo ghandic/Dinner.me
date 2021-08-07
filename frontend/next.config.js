@@ -6,4 +6,7 @@ module.exports = {
         };
         return config;
     },
+    env: {
+        backendHost: "http://0.0.0.0:8000",
+    },
 };

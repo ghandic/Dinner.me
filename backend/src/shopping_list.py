@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 
 from tabulate import tabulate
@@ -35,7 +34,7 @@ class ShoppingList:
         for meal in _list["meals"]:
             unique_names.add(f"- {meal['name']} {meal['link']}")
         resp = resp + list(unique_names)
-        
+
         resp += [
             "",
             underline,

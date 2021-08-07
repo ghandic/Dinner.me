@@ -1,23 +1,26 @@
 version: "2"
 services:
-    dinner.me:
-        build: .
-        image: challisa/dinner.me
-        container_name: dinner.me
+    dinner-backend:
+        image: challisa/dinner.me.backend
+        container_name: dinner.me.backend
         ports:
             - "8000:8000"
+        # Comment out for "prod"
+        build:
+            context: ./backend
         volumes:
-            - .:/opt/working
+            - ./backend:/opt/working
         entrypoint: uvicorn app:app --reload --host 0.0.0.0 --port 8000
 
-    demo:
-        image: challisa/dinner.me.demo
-        container_name: dinner.me.demo
+    dinner-frontend:
+        image: challisa/dinner.me.frontend
+        container_name: dinner.me.frontend
+        ports:
+            - 3000:3000
         build:
             context: ./frontend
+        # Comment out for "prod"
         volumes:
             - ./frontend:/app
             - /app/node_modules
             - /app/.next
-        ports:
-            - 3000:3000

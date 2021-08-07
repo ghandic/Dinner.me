@@ -60,7 +60,7 @@ export default function ShoppingListButton({}) {
                             }
                         });
                         itemCount > 0 &&
-                            fetch(`http://0.0.0.0:8000/report?ids=${ids.join("&ids=")}`)
+                            fetch(`${process.env.backendHost}/report?ids=${ids.join("&ids=")}`)
                                 .then((r) => r.text())
                                 .then((text) => setShoppingList(text));
                     } else {

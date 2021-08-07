@@ -15,7 +15,7 @@ COPY package*.json /app/
 
 # Install dependencies in /app
 RUN apk add --no-cache nodejs npm
-Run npm install
+RUN npm install
 
 
 # Copy the rest of our Next.js folder into /app

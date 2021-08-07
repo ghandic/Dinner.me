@@ -18,8 +18,7 @@ export default function Home() {
     // TODO: Backend - Approx costings
     // TODO: Low priority - Fix searchbar for mobile
     const { query } = useGlobalState();
-
-    const { data: meals, error } = useSWR("http://0.0.0.0:8000/recipes", fetcher);
+    const { data: meals, error } = useSWR(`${process.env.backendHost}/recipes`, fetcher);
 
     if (error) return <div>failed to load</div>;
     if (!meals) return <div>loading...</div>;
@@ -42,9 +41,9 @@ export default function Home() {
             <NavBar></NavBar>
             <PageContent>
                 <Gallery>
-                    {meals.map((meal) => {
+                    {meals.map((meal, index) => {
                         if (does_match(meal)) {
-                            return <Card {...meal}></Card>;
+                            return <Card key={index} {...meal}></Card>;
                         }
                     })}
                 </Gallery>
