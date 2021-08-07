@@ -1,5 +1,7 @@
 # Dinner.me
 
+[![Website badge](https://img.shields.io/badge/website-up-green.svg)](https://dinner-me.herokuapp.com/)
+
 Scrapes meals from Dinner.me and creates a condensed shopping list of the selected items.
 
 ## Usage
