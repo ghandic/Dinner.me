@@ -1,0 +1,20 @@
+version: "2"
+services:
+    dinner-backend:
+        image: challisa/dinner.me.backend.new.prod
+        container_name: dinner.me.backend.new.prod
+        ports:
+            - "8000:8000"
+        build:
+            context: ./backend
+            args:
+                MONGO_USERNAME: ${MONGO_USERNAME}
+                MONGO_PASSWORD: ${MONGO_PASSWORD}
+
+    dinner-frontend:
+        image: challisa/dinner.me.frontend.new.prod
+        container_name: dinner.me.frontend.new.prod
+        ports:
+            - 3000:3000
+        build:
+            context: ./frontend

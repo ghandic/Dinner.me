@@ -9,6 +9,7 @@ const CardContainer = styled.div`
     border: 1px solid #ffe8de;
     width: 436px;
     margin: 20px;
+    position: relative;
 `;
 
 const CardLink = styled.a`
@@ -40,6 +41,20 @@ const CardType = styled.div`
     user-select: none;
 `;
 
+const CardServings = styled.div`
+    color: ${({ theme }) => theme.colors.accent_1};
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    
+    line-height: 1;
+    user-select: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    // left: 50%;
+    // transform: translate(-50%, 0);
+`;
+
 const CardTitle = styled.h2`
     font-weight: 400;
     line-height: 1.5;
@@ -62,7 +77,7 @@ const CardLabels = styled.ul`
     margin: 20px 0 5px;
     font-size: 1rem;
     line-height: 1.5;
-    margin-bottom: 1.25rem;
+    margin-bottom: 2.5rem;
     font-family: inherit;
     padding: 0;
     user-select: none;
@@ -87,8 +102,8 @@ const AddToCart = styled.div`
     background: ${({ theme }) => theme.colors.accent_1};
     border-radius: 10px;
     position: absolute;
-    right: 15px;
-    top: 10px;
+    right: 1rem;
+    bottom: 1rem;
     line-height: 30px;
     text-align: center;
     color: #fff;
@@ -124,6 +139,7 @@ export default function Card({
     name = "",
     subtitle = "",
     meal_attributes = [],
+    serves = 2
 }) {
     const { items } = useGlobalState();
     const itemCount = items.filter((item) => item.id === id)?.[0]?.quantity || 0;
@@ -133,29 +149,14 @@ export default function Card({
         id: id,
         image: image.thumbnail,
         name: name,
+        link: recipe_card_url
     };
 
     return (
         <CardContainer>
             <CardImage src={image.medium}></CardImage>
             <CardDetails>
-                {itemCount > 0 && (
-                    <RemoveFromCart
-                        onClick={() => {
-                            dispatch({ type: "reduce_item", value: details });
-                        }}
-                    >
-                        -
-                    </RemoveFromCart>
-                )}
-                <ItemCount>{itemCount}</ItemCount>
-                <AddToCart
-                    onClick={() => {
-                        dispatch({ type: "add_item", value: details });
-                    }}
-                >
-                    +
-                </AddToCart>
+                
 
                 <CardType>{meal_type}</CardType>
 
@@ -174,7 +175,25 @@ export default function Card({
                         <CardLabel key={index}>{label.replace("_", " ").toUpperCase()}</CardLabel>
                     ))}
                 </CardLabels>
+                <CardServings>Serves: {serves}</CardServings>
             </CardDetails>
+            {itemCount > 0 && (
+                    <RemoveFromCart
+                        onClick={() => {
+                            dispatch({ type: "reduce_item", value: details });
+                        }}
+                    >
+                        -
+                    </RemoveFromCart>
+                )}
+                <ItemCount>{itemCount}</ItemCount>
+                <AddToCart
+                    onClick={() => {
+                        dispatch({ type: "add_item", value: details });
+                    }}
+                >
+                    +
+                </AddToCart>
         </CardContainer>
     );
 }

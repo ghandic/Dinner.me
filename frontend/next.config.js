@@ -1,3 +1,5 @@
+const isDev = process.env.NODE_ENV === 'development'
+
 module.exports = {
     webpackDevMiddleware: (config) => {
         config.watchOptions = {
@@ -7,6 +9,6 @@ module.exports = {
         return config;
     },
     env: {
-        backendHost: "http://0.0.0.0:8000",
+        backendHost: isDev ? "http://0.0.0.0:8000" : "https://dinner-me-backend.herokuapp.com",
     },
 };

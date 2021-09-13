@@ -1,25 +1,29 @@
 version: "2"
 services:
     dinner-backend:
-        image: challisa/dinner.me.backend
-        container_name: dinner.me.backend
+        image: challisa/dinner.me.backend.new
+        container_name: dinner.me.backend.new
         ports:
             - "8000:8000"
-        # Comment out for "prod"
         build:
             context: ./backend
+            args:
+                MONGO_USERNAME: ${MONGO_USERNAME}
+                MONGO_PASSWORD: ${MONGO_PASSWORD}
+        env_file:
+            - .env
         volumes:
             - ./backend:/opt/working
-        entrypoint: uvicorn app:app --reload --host 0.0.0.0 --port 8000
+        entrypoint: uvicorn api:api --reload --host 0.0.0.0 --port 8000
 
     dinner-frontend:
-        image: challisa/dinner.me.frontend
-        container_name: dinner.me.frontend
+        image: challisa/dinner.me.frontend.new
+        container_name: dinner.me.frontend.new
         ports:
             - 3000:3000
         build:
             context: ./frontend
-        # Comment out for "prod"
+            dockerfile: Dockerfile.dev
         volumes:
             - ./frontend:/app
             - /app/node_modules

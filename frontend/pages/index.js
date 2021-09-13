@@ -18,7 +18,9 @@ export default function Home() {
     // TODO: Backend - Approx costings
     // TODO: Low priority - Fix searchbar for mobile
     const { query } = useGlobalState();
-    const { data: meals, error } = useSWR(`${process.env.backendHost}/recipes`, fetcher);
+    const { data: meals, error } = useSWR(`${process.env.backendHost}/dinner/recipes`, fetcher);
+
+    console.log()
 
     if (error) return <div>failed to load</div>;
     if (!meals) return <div>loading...</div>;

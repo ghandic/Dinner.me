@@ -1,8 +1,9 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { useGlobalState, useGlobalDispatch } from "../hooks/useGlobalStore";
+import { useState } from "react";
+
 import Overlay from "./Overlay";
 import ShoppingList from "./ShoppingList";
+import { useGlobalDispatch, useGlobalState } from "../hooks/useGlobalStore";
 
 const Button = styled.div`
     border: 2px solid ${({ theme }) => theme.colors.primary};
@@ -54,15 +55,21 @@ export default function ShoppingListButton({}) {
                     console.log("Open");
                     if (!shoppingListVisible) {
                         var ids = [];
+                        var shoppingList = {meals:{}, tabulate:""}
                         items.forEach((item) => {
                             for (let index = 0; index < item.quantity; index++) {
                                 ids.push(item.id);
+                                shoppingList.meals[item.id] = item
                             }
                         });
                         itemCount > 0 &&
-                            fetch(`${process.env.backendHost}/report?ids=${ids.join("&ids=")}`)
-                                .then((r) => r.text())
-                                .then((text) => setShoppingList(text));
+                            fetch(`${process.env.backendHost}/dinner/shopping_list?ids=${ids.join("&ids=")}`)
+                                .then((r) => r.json())
+                                .then((data) => {
+                                    console.log(data)
+                                    shoppingList.tabulate = data.tabulate
+                                    setShoppingList(shoppingList)
+                                });
                     } else {
                         setShoppingList("");
                     }

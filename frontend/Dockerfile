@@ -1,28 +1,26 @@
 
-# Use node alpine as it's a small node image
-FROM alpine:3.11
-
-# Create the directory on the node image 
-# where our Next.js app will live
-RUN mkdir -p /app
-
-# Set /app as the working directory
+FROM node:16-alpine3.11 as dependencies
 WORKDIR /app
-
-# Copy package.json and package-lock.json
-# to the /app working directory
-COPY package*.json /app/
-
-# Install dependencies in /app
-RUN apk add --no-cache nodejs npm
+COPY package.json package-lock.json ./
 RUN npm install
 
 
-# Copy the rest of our Next.js folder into /app
-COPY . /app
+FROM node:16-alpine3.11 as builder
+WORKDIR /app
+COPY . .
+COPY --from=dependencies /app/node_modules ./node_modules
+RUN npm run build
 
-# Ensure port 3000 is accessible to our system
+FROM node:16-alpine3.11 as runner
+WORKDIR /app
+ENV NODE_ENV production
+# If you are using a custom next.config.js file, uncomment this line.
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
 EXPOSE 3000
+CMD ["npm", "run", "start"]
 
-# Run npm run dev, as we would via the command line 
-CMD ["npm", "run", "dev"]
