@@ -21,6 +21,36 @@ class MongoManager:
         recipes = await self.menu["recipes"].find({}, {"_id": 0}).to_list(None)
         return [DinnerMe(**recipe) for recipe in recipes]
 
+    async def query_recipes(self, query: str, per_page: int, page: int) -> List[Card]:
+        skips = per_page * (page - 1)
+
+        agg = [
+            # Filter added in here if query present
+            {
+                "$project": {
+                    "date": {"$dateFromString": {"dateString": "$startOfWeek"}},
+                    "id": "$id",
+                    "image": "$image",
+                    "meal_type": "$meal_type",
+                    "recipe_card_url": "$recipe_card_url",
+                    "name": "$name",
+                    "subtitle": "$subtitle",
+                    "meal_attributes": "$meal_attributes",
+                    "serves": "$serves",
+                    "_id": "$_id",
+                }
+            },
+            {"$sort": {"date": -1, "_id": -1}},
+            {"$skip": skips},
+            {"$limit": per_page},
+        ]
+        if query.strip():
+            filter = {"$search": {"text": {"path": {"wildcard": "*"}, "query": query,}}}
+            agg.insert(0, filter)
+        recipes = await self.menu["recipes"].aggregate(agg).to_list(None)
+        print(len(recipes))
+        return [Card(**recipe) for recipe in recipes]
+
     async def get_recipe_by_id(self, id: int) -> Optional[DinnerMe]:
         recipe = await self.menu["recipes"].find_one({"id": id}, {"_id": 0})
         if recipe:

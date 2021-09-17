@@ -1,5 +1,6 @@
 from typing import List
 from collections import Counter
+from functools import lru_cache
 
 
 from fastapi_utils.inferring_router import InferringRouter
@@ -12,9 +13,11 @@ from .shared import manager
 router = InferringRouter()
 
 
+@lru_cache
 @router.get("/recipes")
-async def menu():
-    return await manager.mongo.get_all_recipe_cards()
+async def menu(q: str = "", per_page: int = 10, page: int = 1):
+    per_page = max(1, min(per_page, 10))
+    return await manager.mongo.query_recipes(q, per_page, page)
 
 
 @router.get("/shopping_list")
