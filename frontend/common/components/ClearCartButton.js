@@ -1,22 +1,30 @@
 import styled from "styled-components";
-import { useGlobalState, useGlobalDispatch } from "../hooks/useGlobalStore";
+
+import { useGlobalDispatch, useGlobalState } from "../hooks/useGlobalStore";
 
 const Button = styled.div`
     border: 2px solid ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.primary};
 
-    width: 40px;
-    height: 40px;
-    line-height: 47px; /* same as height! */
+    --size: 2rem;
+    --ratio: 0.7;
+    --x-ratio-2: calc((1 - var(--ratio)) / 2);
+    --logo-gap: clamp(0.5rem, 5%, 1rem);
+
+    width: var(--size);
+    height: var(--size);
+    line-height: calc(var(--size) * var(--ratio)); /* same as height! */
     border-radius: 20%;
     text-align: center;
-    position: fixed;
-    right: 100px;
-    top: 25px;
-    transition: 0.3s;
-    font-size: 22px;
+    position: absolute;
+    right: calc(1rem + (2 * var(--size)) + (2 * var(--logo-gap)));
+    top: 50%;
+    transform: translateY(-50%);
 
     & svg {
+        width: calc(var(--size) * var(--ratio));
+        height: calc(var(--size) * var(--ratio));
+        margin-top: calc(var(--size) * var(--x-ratio-2));
         fill: ${({ theme }) => theme.colors.primary};
     }
 

@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import { useGlobalState, useGlobalDispatch } from "../hooks/useGlobalStore";
+
+import { useGlobalDispatch, useGlobalState } from "../hooks/useGlobalStore";
 
 const Search = styled.div`
-    width: 50%;
-    margin: -47px auto;
+    width: calc(100% - 55px);
     position: relative;
+
+    margin-top: 5px;
+    grid-column-start: 2;
+    grid-column-end: 3;
 `;
 
 const SearchInput = styled.input`

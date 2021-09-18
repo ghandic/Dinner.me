@@ -45,7 +45,7 @@ const CardServings = styled.div`
     color: ${({ theme }) => theme.colors.accent_1};
     text-transform: uppercase;
     font-size: 0.75rem;
-    
+
     line-height: 1;
     user-select: none;
     position: absolute;
@@ -139,7 +139,7 @@ export default function Card({
     name = "",
     subtitle = "",
     meal_attributes = [],
-    serves = 2
+    serves = 2,
 }) {
     const { items } = useGlobalState();
     const itemCount = items.filter((item) => item.id === id)?.[0]?.quantity || 0;
@@ -149,15 +149,13 @@ export default function Card({
         id: id,
         image: image.thumbnail,
         name: name,
-        link: recipe_card_url
+        link: recipe_card_url,
     };
 
     return (
-        <CardContainer>
+        <CardContainer data-id={id}>
             <CardImage src={image.medium}></CardImage>
             <CardDetails>
-                
-
                 <CardType>{meal_type}</CardType>
 
                 <CardTitle>
@@ -178,22 +176,22 @@ export default function Card({
                 <CardServings>Serves: {serves}</CardServings>
             </CardDetails>
             {itemCount > 0 && (
-                    <RemoveFromCart
-                        onClick={() => {
-                            dispatch({ type: "reduce_item", value: details });
-                        }}
-                    >
-                        -
-                    </RemoveFromCart>
-                )}
-                <ItemCount>{itemCount}</ItemCount>
-                <AddToCart
+                <RemoveFromCart
                     onClick={() => {
-                        dispatch({ type: "add_item", value: details });
+                        dispatch({ type: "reduce_item", value: details });
                     }}
                 >
-                    +
-                </AddToCart>
+                    -
+                </RemoveFromCart>
+            )}
+            <ItemCount>{itemCount}</ItemCount>
+            <AddToCart
+                onClick={() => {
+                    dispatch({ type: "add_item", value: details });
+                }}
+            >
+                +
+            </AddToCart>
         </CardContainer>
     );
 }

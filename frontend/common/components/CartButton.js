@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useGlobalState, useGlobalDispatch } from "../hooks/useGlobalStore";
+
 import Cart from "./Cart";
 import Overlay from "./Overlay";
+import { useGlobalDispatch, useGlobalState } from "../hooks/useGlobalStore";
 
 const Counter = styled.div`
     position: relative;
@@ -30,19 +31,27 @@ const Button = styled.div`
     color: ${(props) => (props.active ? "#fff" : props.theme.colors.primary)};
     background: ${(props) => (props.active ? props.theme.colors.primary : "none")};
 
-    width: 40px;
-    height: 40px;
-    line-height: 45px; /* same as height! */
+    --size: 2rem;
+    --ratio: 0.7;
+    --x-ratio-2: calc((1 - var(--ratio)) / 2);
+
+    width: var(--size);
+    height: var(--size);
+    line-height: calc(var(--size) * var(--ratio)); /* same as height! */
     border-radius: 20%;
     text-align: center;
-    position: fixed;
-    right: 40px;
-    top: 25px;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
     transition: 0.3s;
-    font-size: 22px;
     z-index: ${(props) => (props.active ? 3 : 1)};
 
     & svg {
+        width: calc(var(--size) * var(--ratio));
+        height: calc(var(--size) * var(--ratio));
+        margin-top: calc(var(--size) * var(--x-ratio-2));
+
         & path {
             fill: ${(props) => (props.active ? "#fff" : props.theme.colors.primary)};
         }

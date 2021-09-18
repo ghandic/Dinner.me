@@ -1,6 +1,7 @@
-import styled from "styled-components";
-import { useGlobalDispatch, useGlobalState } from "../hooks/useGlobalStore";
 import onClickOutside from "react-onclickoutside";
+import styled from "styled-components";
+
+import { useGlobalDispatch, useGlobalState } from "../hooks/useGlobalStore";
 
 const CartContainer = styled.div`
     color: ${({ theme }) => theme.colors.primary};
@@ -50,6 +51,32 @@ const ItemTrashIcon = styled.div`
     & svg {
         & g {
             fill: red;
+        }
+    }
+`;
+
+const CloseButton = styled.div`
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    svg {
+        height: 2rem;
+        width: 2rem;
+        fill: ${({ theme }) => theme.colors.primary};
+    }
+
+    &:hover {
+        color: #fff;
+        cursor: pointer;
+
+        & svg {
+            & path {
+                fill: ${({ theme }) => theme.colors.primary};
+            }
+            & path.circle {
+                color: ${({ theme }) => theme.colors.primary};
+            }
         }
     }
 `;
@@ -108,6 +135,42 @@ function Cart() {
                     </Item>
                 ))}
             </ItemList>
+            <CloseButton onClick={Cart.handleClickOutside}>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    role="img"
+                    width="1em"
+                    height="1em"
+                    preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 512 512"
+                >
+                    <path
+                        d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192s192-86 192-192z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-miterlimit="10"
+                        stroke-width="32"
+                        class="circle"
+                    />
+                    <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        d="M320 320L192 192"
+                    />
+                    <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="32"
+                        d="M192 320l128-128"
+                    />
+                </svg>
+            </CloseButton>
         </CartContainer>
     );
 }
