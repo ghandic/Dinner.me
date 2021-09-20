@@ -32,14 +32,18 @@ u_replace = {
     "(MAX ALLOWED FOR LC)": "",
     "(APPROVED BY YN)": "",
     ", plus extra for greasing": "",
-    # multiples
-    "small garlic clove": "garlic clove",
-    "garlic cloves": "garlic clove",
 }
 
 unit_to_g = {"l": 1000, "tbsp": 17, "tbs": 17, "tsp": 5.69, "g": 1, "kg": 1000, "ml": 1, "cup": 250, "cups": 250}
 blacklist_ingredients = ["boiling water", "plate for serving"]
-force_ingredients = {"wine vinegar": "red/white/balsamic vinegar"}
+force_ingredients = {
+    "wine vinegar": "red/white/balsamic vinegar",
+    # multiples
+    "small garlic clove": "garlic clove",
+    "garlic cloves": "garlic clove",
+    "eggs": "egg",
+    "tomatoes": "tomato",
+}
 
 
 class Ingredient(BaseModel):
@@ -69,6 +73,7 @@ class Ingredient(BaseModel):
         return Ingredient(amount=self.amount + other.amount, unit=self.unit, name=self.name)
 
     __radd__ = __add__
+    __rmul__ = __mul__
 
 
 def structure_ingredient(value: str) -> List[Ingredient]:
@@ -91,7 +96,7 @@ def structure_ingredient(value: str) -> List[Ingredient]:
                 if force_ing in value:
                     value = replacement
                     break
-            return [Ingredient(amount=1, unit="", name=value)]
+            return [Ingredient(amount=1, unit="", name=value.strip())]
 
     # multiplier, quantity, unit -> quantity, unit, original
     tmp = []
@@ -115,7 +120,7 @@ def structure_ingredient(value: str) -> List[Ingredient]:
                 if force_ing in ing_name:
                     ing_name = replacement
                     break
-            output.append(Ingredient(amount=t[0], unit=t[1].strip().strip(")"), name=ing_name))
+            output.append(Ingredient(amount=t[0], unit=t[1].strip().strip(")"), name=ing_name.strip()))
         tmp_name = tmp_name[: tmp_name.rfind(t[2])]
 
     return output
