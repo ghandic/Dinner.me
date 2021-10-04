@@ -29,7 +29,7 @@ async def shop(ids: List[int] = Query(None, description="List of ids to combine"
         if ingredients:
             shopping_list += [i * qty for i in ingredients]
 
-    shopping_list_names = {s.name for s in shopping_list}
+    shopping_list_names = {s.name for s in shopping_list if s.name.strip()}
 
     condensed_shopping_list = [
         sum(list(filter(lambda item: item.name == sln, shopping_list))) for sln in shopping_list_names
