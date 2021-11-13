@@ -69,7 +69,7 @@ class Ingredient(BaseModel):
         if not isinstance(other, Ingredient):
             raise TypeError("Can only add ingredients")
         if (other.name != self.name) or (self.unit != other.unit):
-            raise TypeError("Can only add same ingredients with same unit")
+            raise TypeError(f"Can only add same ingredients with same name and unit, Unit: {self.unit} vs {other.unit}, Name: {self.name} vs {other.name}")
         return Ingredient(amount=self.amount + other.amount, unit=self.unit, name=self.name)
 
     __radd__ = __add__
